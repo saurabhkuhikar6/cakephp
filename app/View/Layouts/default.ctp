@@ -34,7 +34,7 @@
 	<?php
 		echo $this->Html->meta('icon');
 
-		// echo $this->Html->css('cake.generic');
+		echo $this->Html->css('cake.generic');
 
 		// echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -45,16 +45,22 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
+      <a class="navbar-brand" href="<?= $this->Html->url(array('controller'=>'topics','action'=>'index')) ?>">WebSiteName</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="<?= $this->Html->url(array('controller'=>'topics','action'=>'index')) ?>">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
+      
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="<?= $this->Html->url(array('controller'=>'users','action'=>'add')) ?>"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="<?= $this->Html->url(array('controller'=>'users','action'=>'login')) ?>"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+		<?php if(AuthComponent::user()){  ?>
+			<li><a href="<?= $this->Html->url(array('controller'=>'users','action'=>'logout')) ?>"><span class="glyphicon glyphicon-log-in"></span> Logout (<?=AuthComponent::user('username') ?>)</a></li>
+			
+			<?php }else{ ?>			
+		
+		<li><a href="<?= $this->Html->url(array('controller'=>'users','action'=>'login')) ?>"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+		<li><a href="<?= $this->Html->url(array('controller'=>'users','action'=>'add')) ?>"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+		<?php  } ?>
+
     </ul>
   </div>
 </nav>

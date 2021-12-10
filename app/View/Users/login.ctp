@@ -11,13 +11,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="username">User Name</label>
-                                <?= $this->Form->input('username',array('label'=>'','class'=>'form-control','placeholder'=>'Enter the User name'));?>
+                                <?= $this->Form->input('username',array('label'=>'','placeholder'=>'Enter the User name'));?>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <?= $this->Form->input('password',array('label'=>'','class'=>'form-control','placeholder'=>'Enter the Password'));?>
+                                <?= $this->Form->input('password',array('label'=>'','placeholder'=>'Enter the Password'));?>
                             </div>
                         </div>
                         <div class="col-md-12">
