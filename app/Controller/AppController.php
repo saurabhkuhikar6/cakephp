@@ -34,17 +34,21 @@ class AppController extends Controller {
 
     public $helpers = array('Html', 'Form', 'Session');
     public $components = array('Session','Auth' => array(
-        'loginRedirect' => array('controller' => 'users', 'action' => 'index'),
+        'loginRedirect' => array('controller' => 'topics', 'action' => 'index'),
         'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
         'authError' => 'You must be logged in to view this page.',
-        'loginError' => 'Invalid Username or Password entered, please try again.'
- 
-    )    
- );
+        'loginError' => 'Invalid Username or Password entered, please try again.',
+        'authorize'=> array('Controller')
+        )    
+    );
+
+ public function isAuthorized(){
+    return true;
+ }
     
     // only allow the login controllers only
     public function beforeFilter() {
-        $this->Auth->allow('login');
+        $this->Auth->allow('/users/login');
     }
     
 }

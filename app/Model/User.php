@@ -5,35 +5,36 @@ App::uses('AppModel', 'Model');
 
 class User extends AppModel {
 
-    public $validate = array(
-        'username' => array(
-            // 'required' => true,
-            'required' => array(
-                'rule' => 'notBlank',
-                'message' => 'A username is required',
+    public $name ='User';
+
+    var $validate = array(
+        'username' => array(           
+            
+            'rule' => array('email','notBlank'),
+            'message' => 'Kindly provide your vaild username.',
+            
+            'unique' => array(
+                'rule' => 'isUnique',
+                'message' => 'Provided Email already exists.'
             )
         ),
-       
         'password' => array(
-            'required' => array(
+            array(
                 'rule' => 'notBlank',
-                'message' => 'A password is required'
+                'required' => true,
+                'message' => 'Please Enter password'
+            ),
+            array(                              
+            'rule' => array('minLength', 6),
+            'message' => 'Passwords must be at least 6 characters long.',
             )
         ),
         'full_name' => array(
-            'required' => array(
-                'rule' => 'notBlank',
-                'message' => 'A full name is required'
-            )
+            'rule' => 'notBlank',
+            'message' => 'Please type full name',
         ),
-        // 'role' => array(
-        //     'valid' => array(
-        //         'rule' => array('inList', array('admin', 'author')),
-        //         'message' => 'Please enter a valid role',
-        //         'allowEmpty' => false
-        //     )
-        // )
-    );
+        
+    ); 
 
    
 }

@@ -1,9 +1,11 @@
 <?php
 
-
+use Cake\Validation\Validator;
 App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
+
+    public $name ='Users';
 
     public $components = array('Paginator');
 
@@ -34,26 +36,19 @@ class UsersController extends AppController {
         $this->redirect('/topics/index');
     }
     
-    public function add(){
+    public function add(){        
         if ($this->request->is('post')) {
-
-           $this->User->create();
-
             $this->request->data['User']['password'] = AuthComponent::password( $this->request->data['User']['password']);
-            $this->request->data['User']['role'] = 1;
-
+            $this->request->data['User']['role'] = 1;           
             if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('The user has been saved'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect('/topics/index');
             }
-            $this->Session->setFlash(
-                __('The user could not be saved. Please, try again.')
-            );
+            $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
         }
     }
 
-    public function index(){
-        
+    public function index(){        
         $this->User->recursive = 0;
         $this->set('users',$this->Paginator->paginate());
     }
