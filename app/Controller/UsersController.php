@@ -1,6 +1,6 @@
 <?php
 
-use Cake\Validation\Validator;
+// use Cake\Validation\Validator;
 App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
@@ -23,7 +23,7 @@ class UsersController extends AppController {
         // if we get the post information, try to authenticate
         if ($this->request->is('post')) {   
             if ($this->Auth->login()) {
-                $this->Session->setFlash(__('Welcome, '. $this->Auth->user('username')));
+                $this->Flash->success(__('Welcome, '. $this->Auth->user('username')));
                 $this->redirect('/topics/index');
             } else {
                 $this->Session->setFlash(__('Invalid username or password'));
@@ -41,7 +41,7 @@ class UsersController extends AppController {
             $this->request->data['User']['password'] = AuthComponent::password( $this->request->data['User']['password']);
             $this->request->data['User']['role'] = 1;           
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Flash->success(__('The user has been saved'));
                 return $this->redirect('/topics/index');
             }
             $this->Session->setFlash(__('The user could not be saved. Please, try again.'));

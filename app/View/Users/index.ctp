@@ -10,6 +10,7 @@
 
 <div class="container">
   <h2>User Table</h2>
+  <?php echo $this->Flash->render(); ?>
   <p><?php echo $this->Html->link('Add New User', array('action' => 'add'),array('class' => 'btn btn-info')); ?></p>
   <table class="table table-bordered">
     <thead>

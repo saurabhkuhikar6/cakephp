@@ -12,6 +12,7 @@
 
 <div class="container">
   <h2>Topics</h2>
+<?php echo $this->Flash->render(); ?>
 <?php $paginator = $this->Paginator; ?>
   <?php if(AuthComponent::user()){  ?>
     <p><?php echo $this->Html->link('Add New Topic', array('action' => 'add'),array('class' => 'btn btn-info')); ?></p>

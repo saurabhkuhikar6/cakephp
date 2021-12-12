@@ -6,7 +6,7 @@
                 <?=  $this->Flash->render('auth'); ?>
                 <?=  $this->Form->create('User'); ?>         
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Panel with panel-primary class</div>
+                    <div class="panel-heading">Login Form</div>
                     <div class="panel-body">                
                         <div class="col-md-12">
                             <div class="form-group">
@@ -17,7 +17,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <?= $this->Form->input('password',array('label'=>'','placeholder'=>'Enter the Password'));?>
+                                <?= $this->Form->input('password',array('type'=>'password','label'=>'','placeholder'=>'Enter the Password'));?>
                             </div>
                         </div>
                         <div class="col-md-12">

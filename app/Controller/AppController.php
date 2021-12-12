@@ -32,23 +32,24 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
-    public $helpers = array('Html', 'Form', 'Session');
-    public $components = array('Session','Auth' => array(
+    public $helpers = array('Html', 'Form', 'Session','Flash');
+    public $components = array('Session','Paginator','Flash','Auth' => array(
         'loginRedirect' => array('controller' => 'topics', 'action' => 'index'),
-        'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
+        'logoutRedirect' => array('controller' => 'topics', 'action' => 'index'),
         'authError' => 'You must be logged in to view this page.',
         'loginError' => 'Invalid Username or Password entered, please try again.',
         'authorize'=> array('Controller')
         )    
     );
 
- public function isAuthorized(){
-    return true;
- }
+    public function isAuthorized(){
+        return true;
+    }
     
     // only allow the login controllers only
     public function beforeFilter() {
         $this->Auth->allow('/users/login');
+        // $this->Auth->allow('/topics/index');
     }
     
 }

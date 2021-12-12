@@ -5,7 +5,6 @@
 
 
 class TopicsController extends AppController {
-    public $components = array('Session','Paginator');
 
     public function beforefilter(){
         $this->Auth->allow('index');
@@ -21,7 +20,7 @@ class TopicsController extends AppController {
             }
 
             if ($this->Topic->save($this->request->data)) { 
-                $this->Session->setFlash('The Topics has been created.');
+                $this->Flash->success(__('The Topics has been created.'));
                 return $this->redirect('/topics/index');
             }
             $this->Flash->error(__('Unable to add your topics.'));
@@ -34,8 +33,7 @@ class TopicsController extends AppController {
             'limit' => 3,
             'order' => array('id' => 'desc')
         );
-            // we are using the 'User' model        
-        // pass the value to our view.ctp
+        // we are using the 'User' model        
         $this->set('topic', $this->paginate('Topic'));       
     }
 
@@ -64,7 +62,7 @@ class TopicsController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             $this->Topic->id = $id;
             if ($this->Topic->save($this->request->data)) {
-                $this->Session->setFlash('Your topic has been updated.');
+                $this->Flash->success('Your topic has been updated.');
                 return $this->redirect('index');
             }
             $this->Flash->error(__('Unable to update your topic.'));
@@ -85,6 +83,42 @@ class TopicsController extends AppController {
                 return $this->redirect('index');
             }
         }
+    }
+
+    public function export()
+    {
+        $this->autoRender=false;
+        ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
+        $results = $this->Topic->find('all', array());// set the query function
+        // echo "<pre>";
+        // print_r($results);
+        // die();
+        $header_row = "";
+        $header_row .='
+        <table border="1"> 
+            <tr>          
+            <th>ID</th>
+            <th>User Name</th>               
+            <th>Title</th>
+            <th>Created</th>
+            <th>Updated</th>
+            </tr>';
+        foreach($results as $result)
+        {
+            $header_row.= 
+            '<tr><td>'.$result['Topic']['id'].'</td>
+            <td>'.$result['User']['username'].'</td>
+            <td>'.$result['Topic']['title'].'</td>
+            <td>'.$result['Topic']['created'].'</td>
+            <td>'.$result['Topic']['updated'].'</td>
+            </tr>';
+
+        }
+        $header_row .='</tabel>';
+        $filename = "export_".date("Y.m.d").".xls";
+        header('Content-type: application/ms-excel');
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
+        echo($header_row);
     }
 }
 

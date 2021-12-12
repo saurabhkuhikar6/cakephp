@@ -4,7 +4,7 @@ App::uses('AppController', 'Controller');
 
 
 class PostsController extends AppController {
-    public $helpers = array('Html', 'Form');
+    public $helpers = array('Html', 'Form','Flash');
 
     public function index() {
         $this->set('post', $this->Post->find('all'));
@@ -29,7 +29,7 @@ class PostsController extends AppController {
             $this->request->data['Post']['user_id'] = AuthComponent::User('id');
 
             if ($this->Post->save($this->request->data)) {
-                $this->Session->setFlash('Your post has been saved.');
+                $this->Flash->success('Your post has been saved.');
                 $this->redirect('/topics/view/'.$id);
             }   
         }
@@ -51,7 +51,7 @@ class PostsController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             $this->Post->id = $id;
             if ($this->Post->save($this->request->data)) {
-                $this->Session->setFlash('Your post has been updated.');
+                $this->Flash->success('Your post has been updated.');
                 return $this->redirect(array('action' => 'index'));
             }
             $this->Common->flash(array('warning', 'error'));
@@ -73,14 +73,9 @@ class PostsController extends AppController {
             }
         
             if ($this->Post->delete($id)) {
-                $this->Flash->success(
-                    __('The post with id: %s has been deleted.', h($id))
-                );
+                $this->Flash->success('The post with id: %s has been deleted.', h($id));               
             } else {
-                $this->Flash->error(
-                    __('The post with id: %s could not be deleted.', h($id))
-                );
-            }
+                $this->Session->setFlash('The post with id: %s could not be deleted.', h($id));     }
         
             return $this->redirect(array('action' => 'index'));
         }

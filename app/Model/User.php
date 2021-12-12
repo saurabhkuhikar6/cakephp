@@ -8,8 +8,10 @@ class User extends AppModel {
     public $name ='User';
 
     var $validate = array(
-        'username' => array(           
-            
+        'login' => array(
+            'rule' => 'alphaNumeric'
+        ),
+        'username' => array(
             'rule' => array('email','notBlank'),
             'message' => 'Kindly provide your vaild username.',
             
@@ -19,23 +21,16 @@ class User extends AppModel {
             )
         ),
         'password' => array(
-            array(
-                'rule' => 'notBlank',
-                'required' => true,
-                'message' => 'Please Enter password'
-            ),
-            array(                              
-            'rule' => array('minLength', 6),
-            'message' => 'Passwords must be at least 6 characters long.',
-            )
-        ),
+            'rule' => array('minLength', '8'),
+            'message' => 'Minimum 8 characters long'
+        ),        
+            
         'full_name' => array(
             'rule' => 'notBlank',
             'message' => 'Please type full name',
         ),
         
-    ); 
-
-   
+    );  
+    
 }
 ?>

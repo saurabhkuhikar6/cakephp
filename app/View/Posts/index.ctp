@@ -1,4 +1,5 @@
 <h1>Blog posts</h1>
+<?php echo $this->Flash->render(); ?>
 <!-- <p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p> -->
 <table>
     <tr>
