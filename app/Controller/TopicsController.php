@@ -2,7 +2,8 @@
  
 
  App::uses('AppController', 'Controller');
-
+ App::import('Vendor','tcpdf/tcpdf');
+ App::import('Vendor','tcpdf',array('file' => 'tcpdf/tcpdf.php'));
 
 class TopicsController extends AppController {
 
@@ -85,7 +86,7 @@ class TopicsController extends AppController {
         }
     }
 
-    public function export()
+    public function excel_export()
     {
         $this->autoRender=false;
         ini_set('max_execution_time', 1600); //increase max_execution_time to 10 min if data set is very large
@@ -119,7 +120,8 @@ class TopicsController extends AppController {
         header('Content-type: application/ms-excel');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
         echo($header_row);
-    }
+    }    
+   
 }
 
 ?>

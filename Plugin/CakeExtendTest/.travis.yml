@@ -1,0 +1,47 @@
+language: php
+
+php:
+  - 7.3
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+env:
+  global:
+    - PLUGIN_NAME=CakeExtendTest
+    - REQUIRE="anklimsk/cakephp-console-installer"
+    - DB=mysql
+    - CAKE_REF=2.x
+    - PHPUNIT=5.7.19
+    - COMPOSER_ROOT_VERSION=dev-master
+
+services:
+  - mysql
+
+matrix:
+  include:
+    - php: 7.3
+      env:
+        - CODECOVERAGE=1
+    - php: 7.3
+      env:
+        - PHPCS=1
+        - PHPCS_IGNORE=CakeInstaller,CakeBasicFunctions,CakeConfigPlugin
+    - php: 7.3
+      env:
+        - FOC_VALIDATE=1
+
+before_script:
+  - git clone -b master https://github.com/anklimsk/travis.git --depth 1 ../travis
+  - travis_wait ../travis/before_script.sh
+  - if [ -f "../cakephp/app/Console/cake" ]; then ../cakephp/app/Console/cake CakeInstaller setsecurkey --yes --app $(cd ../cakephp/app; pwd); fi
+
+script:
+  - ../travis/script.sh
+
+after_success:
+  - ../travis/after_success.sh
+
+notifications:
+  email: false
