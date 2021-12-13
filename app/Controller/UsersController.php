@@ -1,6 +1,6 @@
 <?php
 
-// use Cake\Validation\Validator;
+use Cake\Validation\Validator;
 App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
@@ -23,7 +23,7 @@ class UsersController extends AppController {
         // if we get the post information, try to authenticate
         if ($this->request->is('post')) {   
             if ($this->Auth->login()) {
-                $this->Flash->success(__('Welcome, '. $this->Auth->user('username')));
+                $this->Session->setFlash(__('Welcome, '. $this->Auth->user('username')));
                 $this->redirect('/topics/index');
             } else {
                 $this->Session->setFlash(__('Invalid username or password'));
@@ -39,60 +39,73 @@ class UsersController extends AppController {
     public function add(){        
         if ($this->request->is('post')) {
             $this->request->data['User']['password'] = AuthComponent::password( $this->request->data['User']['password']);
-            $this->request->data['User']['role'] = 1;           
+            $this->request->data['User']['role'] = 1;  
+            if($this->User->validateUnique($this->request->data['User']['username'],'username')){
+            //    echo "yes";
+            //     die();  
+            }else{
+                echo "no";
+                die();
+            }
             if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('The user has been saved'));
+                $this->Session->setFlash(__('The user has been saved'));
                 return $this->redirect('/topics/index');
             }
             $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
         }
     }
 
-    public function index(){        
-        $this->User->recursive = 0;
-        $this->set('users',$this->Paginator->paginate());
+    public function index(){ 
+        if(AuthComponent::User('role') == 2){       
+            $this->User->recursive = 0;
+            $this->set('users',$this->Paginator->paginate());
+        }
     }
 
     public function view($id){
+        if(AuthComponent::User('role') == 2){  
+            $data = $this->User->findById($id);
+            $this->set('users',$data);
 
-        $data = $this->User->findById($id);
-        $this->set('users',$data);
-
+        }
     }
 
 
     public function edit($id = null) {
-        if (!$id) {
-            throw new NotFoundException(__('Invalid post'));
-        }
-    
-        $user = $this->User->findById($id);
-        if (!$user) {
-            throw new NotFoundException(__('Invalid post'));
-        }
-    
-        if ($this->request->is(array('post', 'put'))) {
-            $this->User->id = $id;
-            if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('Your topic has been updated.'));
-                return $this->redirect('index');
+        if(AuthComponent::User('role') == 2){  
+            if (!$id) {
+                throw new NotFoundException(__('Invalid post'));
             }
-            $this->Flash->error(__('Unable to update your topic.'));
-        }
-    
-        if (!$this->request->data) {
-            $this->request->data = $user;
+        
+            $user = $this->User->findById($id);
+            if (!$user) {
+                throw new NotFoundException(__('Invalid post'));
+            }
+        
+            if ($this->request->is(array('post', 'put'))) {
+                $this->User->id = $id;
+                if ($this->User->save($this->request->data)) {
+                    $this->Flash->success(__('Your topic has been updated.'));
+                    return $this->redirect('index');
+                }
+                $this->Flash->error(__('Unable to update your topic.'));
+            }
+        
+            if (!$this->request->data) {
+                $this->request->data = $user;
+            }
         }
     }
 
     public function delete($id) {
-
-        $this->User->id = $id;
-                      
-        if ($this->request->is(array('post', 'put'))) {
-            if($this->User->delete()){
-                $this->Session->setFlash('The topic has been deleted');
-                return $this->redirect('index');
+        if(AuthComponent::User('role') == 2){ 
+            $this->User->id = $id;
+                        
+            if ($this->request->is(array('post', 'put'))) {
+                if($this->User->delete()){
+                    $this->Session->setFlash('The topic has been deleted');
+                    return $this->redirect('index');
+                }
             }
         }
     }

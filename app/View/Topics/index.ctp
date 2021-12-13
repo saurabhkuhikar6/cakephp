@@ -15,15 +15,9 @@
 <?php echo $this->Flash->render(); ?>
 <?php $paginator = $this->Paginator; ?>
   <?php if(AuthComponent::user()){  ?>
-    <p><?php echo $this->Html->link('Add New Topic', array('action' => 'add'),array('class' => 'btn btn-info')); ?></p>
-    <br>
-    <p><?php echo $this->Html->link('Logout', array('controller'=>'users','action' => 'logout'),array('class' => 'btn btn-warm')); ?> (<?=AuthComponent::user('username') ?>)</p>
-    <?php } else{ ?>
-
-       <p><?php echo $this->Html->link('Login', array('controller'=>'users','action' => 'login'),array('class' => 'btn btn-primary')); ?></p>
-
-    <?php  }
-  ?>
+    <p><?php  echo $this->Html->link('Add New Topic', array('action' => 'add'),array('class' => 'btn btn-info')); ?></p>
+   
+ <?php } ?>
   <table class="table table-bordered">
     <thead>
       <tr>

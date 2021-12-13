@@ -15,10 +15,11 @@ class User extends AppModel {
             'rule' => array('email','notBlank'),
             'message' => 'Kindly provide your vaild username.',
             
-            'unique' => array(
-                'rule' => 'isUnique',
-                'message' => 'Provided Email already exists.'
-            )
+            // 'unique' => array(
+            //     'rule' => 'isUnique',
+            //     'message' => 'Provided Email already exists.'
+            // ),
+            array('rule' => array('validateUnique', 'username'), 'message'=>'Provided User Name already exists.'),
         ),
         'password' => array(
             'rule' => array('minLength', '8'),
@@ -30,7 +31,17 @@ class User extends AppModel {
             'message' => 'Please type full name',
         ),
         
+        
     );  
+
+    function validateUnique($fieldValue, $fieldName) {
+       
+        if (!$this->isUnique($fieldName)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     
 }
 ?>
